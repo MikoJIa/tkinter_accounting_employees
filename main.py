@@ -1,8 +1,11 @@
 import tkinter as tk
+from datetime import datetime
+
 from tkcalendar import DateEntry
 from tkinter import ttk
 from tkinter import messagebox
 import sqlite3
+from datetime import datetime
 
 conn = sqlite3.connect('accounting.db')
 cur = conn.cursor()
@@ -74,7 +77,8 @@ def add_in_table():
 
 def sort_data(number_col, reverse):
     lst = [(tree.set(i, number_col), i) for i in tree.get_children('')]
-    lst.sort(reverse=reverse)
+    lst.sort(key=lambda k: datetime.strptime(k[0], '%d.%m.%y'), reverse=reverse)
+    print(lst)
     for index, (_, item) in enumerate(lst):
         tree.move(item, '', index)
 
@@ -251,26 +255,26 @@ ent_commit.grid(row=8, column=1)
 
 btn_add_employee = tk.Button(left_frame, text='Добавить', font=('Arial', 15),
                              bg='Cadetblue1', relief=tk.RAISED, width=25, command=add_in_table)
-btn_add_employee.place(relx=0.33, rely=0.32)
+btn_add_employee.place(relx=0.33, rely=0.38)
 
 btn_update_employee = tk.Button(left_frame, text='Изменить', font=('Arial', 15),
                                 bg='Cadetblue3', relief=tk.RAISED, width=25, command=update_data)
-btn_update_employee.place(relx=0.33, rely=0.37)
+btn_update_employee.place(relx=0.33, rely=0.43)
 
 btn_remove_employee = tk.Button(left_frame, text='Удалить', font=('Arial', 15),
                                 bg='Cadetblue4', relief=tk.RAISED, width=25, command=button_delete)
-btn_remove_employee.place(relx=0.33, rely=0.42)
+btn_remove_employee.place(relx=0.33, rely=0.48)
 
 btn_clear = tk.Button(left_frame, text='Очистить поля ввода', font=('Arial', 15), bg='LightGreen', relief=tk.RAISED,
                       width=25, command=clear_rows)
-btn_clear.place(relx=0.33, rely=0.47)
+btn_clear.place(relx=0.33, rely=0.53)
 
 btn_return_data_all = tk.Button(left_frame, text='Вернуться на главную', font=('Arial', 15), relief=tk.RAISED, width=25,
                                 command=return_to_main_page, bg='LightBlue2')
-btn_return_data_all.place(relx=0.33, rely=0.52)
+btn_return_data_all.place(relx=0.33, rely=0.58)
 
 frame_search = tk.Frame(master=left_frame, width=424, height=100, relief=tk.SUNKEN, bd=4)
-frame_search.place(relx=0.01, rely=0.58)
+frame_search.place(relx=0.01, rely=0.65)
 
 lbl_search = tk.Label(master=frame_search, text='Поиск', font=('Arial', 20))
 lbl_search.place(relx=0.01, rely=0.03)
